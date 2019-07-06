@@ -1,0 +1,94 @@
+<div class="container p-5">
+  <h3>Edit</h3>
+  <hr>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="title">Title</label>
+        <input id="title" name="title" placeholder="Title" [(ngModel)]="editBug.title" minlength="1" type="text"
+          class="form-control formStyle" #title="ngModel" required autocomplete="off">
+        <div *ngIf="!title.valid" class="alert alert-danger">
+          <div *ngIf="title.errors.required"> Title is required</div>
+          <div *ngIf="title.errors.minlength"> Title must have at least 1 character</div>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="description">Description</label>
+        <input id="description" name="description" placeholder="Description" [(ngModel)]="editBug.description"
+          [ngModelOptions]="{updateOn: 'blur'}" type="text" class="form-control formStyle" #description="ngModel"
+          required autocomplete="off">
+        <div class="alert alert-danger" *ngIf="description.invalid"> Description is required
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="priority">Priority</label><br>
+        <select id="priority" name="priority" [ngModel]="selectedPriority" (ngModelChange)="onChangePriority($event)"
+          class="form-control formStyle" required>
+          <option *ngFor="let i of priorityOptions" [ngValue]="i.key">{{i?.name}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="reporter">Reporter</label><br>
+        <select id="reporter" name="reporter" [ngModel]="selectedReporter" (ngModelChange)="onChangeReporter($event)"
+          class="form-control formStyle" required>
+          <option *ngFor="let i of reporterOptions" [ngValue]="i.key">{{i.name}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="status">Status</label><br>
+        <select id="status" name="status" [ngModel]="selectedStatus" (ngModelChange)="onChangeStatus($event)"
+          class="form-control formStyle" required>
+          <option *ngFor="let i of statusOptions" [ngValue]="i.key">{{i.name}}</option>
+        </select>
+      </div>
+    </div>
+    <h4 class="pt-3">Comments</h4>
+    <ol>
+      <li *ngFor="let comment of editBug.comments">
+        Reporter: {{comment.reporter}}<br>
+        Description: {{comment.description}}<br>
+      </li>
+    </ol>
+    <button title="Submit" type="submit" [disabled]="!f.valid" class="btn btn-lg btnSubmit pl-0 pt-4">
+      <span class="fa-stack">
+        <i class="fa fa-circle fa-stack-2x circleSubmit"></i>
+        <i class="fa fa-check fa-stack-1x"></i>
+      </span>
+    </button>
+  </form>
+</div>
+<div class="container p-5 mt-5">
+  <h3>Add comment</h3>
+  <hr>
+  <form #commentForm="ngForm" (ngSubmit)="onCommentSubmit(commentForm)">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="commentReporter">Reporter</label>
+        <input id="commentReporter" name="reporter" placeholder="Reporter" [(ngModel)]="newComment.reporter"
+          [ngModelOptions]="{updateOn: 'blur'}" type="text" class="form-control" #reporter="ngModel" required
+          autocomplete="off">
+        <div class="alert alert-danger" *ngIf="!reporter.valid && (reporter.dirty || reporter.touched)"> Reporter is
+          required
+        </div>
+      </div>
+      <div class="form-group col-md-8">
+        <label for="commentDescription">Description</label><br>
+        <textarea id="commentDescription" name="description" placeholder="Description"
+          [(ngModel)]="newComment.description" [ngModelOptions]="{updateOn: 'blur'}" class="form-control" rows="1"
+          #commentDescription="ngModel" required></textarea>
+        <div class="alert alert-danger"
+          *ngIf="!commentDescription.valid && (commentDescription.dirty || commentDescription.touched)">Description is
+          required
+        </div>
+      </div>
+    </div>
+    <button title="Add comment" type="submit" [disabled]="!commentForm.valid" class="btn btn-lg btnAddComment pl-0 pt-4">
+      <span class="fa-stack">
+        <i class="fa fa-circle fa-stack-2x circleAddComment"></i>
+        <i class="fa fa-plus fa-stack-1x"></i>
+      </span>
+    </button>
+  </form>
+</div>

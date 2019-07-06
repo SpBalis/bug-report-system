@@ -1,0 +1,81 @@
+form {
+  background-color: #1F2739;
+  color: #A7A1AE;
+}
+
+label {
+  font-weight: bold;
+  font-size: 1em;
+  color: #FB667A;
+}
+
+hr {
+  background-color: #323C50;
+  margin-bottom: 1.4rem;
+}
+
+h3 {
+  color: #ffb742;
+}
+
+.container {
+  background-color: #1F2739;
+  border: 1px solid #323C50;
+}
+
+.formStyle, .form-control {
+  background-color: #1F2739;
+  color: #A7A1AE;
+}
+
+.form-control {
+  outline: none;
+  box-shadow: none !important;
+  border-bottom: 1px solid #323C50 !important;
+  border-top: 1px solid hsla(221, 23%, 25%, 0) !important;
+  border-left: 1px solid hsla(221, 23%, 25%, 0) !important;
+  border-right: 1px solid hsla(221, 23%, 25%, 0) !important;
+}
+
+.form-control:focus {
+  border-bottom: 1px solid #FB667A !important;
+  /* border-bottom: 1px solid #1ab188 !important; */
+}
+
+.btn {
+  outline: none;
+  box-shadow: none !important;
+  padding: 0;
+}
+
+.btnSubmit {
+  color: white;
+}
+
+.btnSubmit:hover {
+  color: #1F2739;
+}
+
+.circleSubmit::before {
+  color: rgb(11, 211, 134);
+}
+
+.btnAddComment {
+  color: white;
+}
+
+.btnAddComment:hover {
+  color: #1F2739;
+}
+
+.circleAddComment::before {
+  color: rgb(11, 211, 134);
+}
+
+.alert {
+  color: #FB667A;
+  background-color: rgba(251, 102, 122, 0.185);
+  outline: none;
+  border: none;
+  box-shadow: none !important;
+}

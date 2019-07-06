@@ -1,0 +1,66 @@
+<div class="container p-5">
+  <h3>Report bug</h3>
+  <hr>
+  <form #insertform="ngForm" (ngSubmit)="onUpdate(insertform)">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="title">Title</label>
+        <input name="title" id="title" #title="ngModel" minlength="1" required [(ngModel)]="newBug.title"
+          [ngModelOptions]="{updateOn: 'blur'}" type="text" class="form-control" autocomplete="off" placeholder="Title">
+        <div *ngIf="!title.valid && (title.dirty || title.touched)" class="alert alert-danger">
+          <div *ngIf="title.errors.required"> Title is required</div>
+          <div *ngIf="title.errors.minlength"> Title must have at least 1 character</div>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="description">Description</label>
+        <input name="description" id="description" #description="ngModel" required [(ngModel)]="newBug.description"
+          [ngModelOptions]="{updateOn: 'blur'}" type="text" class="form-control" autocomplete="off"
+          placeholder="Description">
+        <div class="alert alert-danger" *ngIf="!description.valid && (description.dirty || description.touched)">
+          Description is required
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label>Priority</label>
+        <select name="priority" [ngModel]="newBug.priority" (ngModelChange)="insertform.priority=$event"
+          class="form-control" #priority="ngModel" required>
+          <option [ngValue]="null" disabled="true" [selected]="true" style="display: none">Select</option>
+          <option *ngFor="let i of priorityOptions" [ngValue]="i.key">{{i.priority}}</option>
+        </select>
+        <div class="alert alert-danger" *ngIf="!priority.valid && (priority.dirty || priority.touched)"> Priority is
+          required
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Reporter</label>
+        <select name="reporter" [ngModel]="newBug.reporter" (ngModelChange)="insertform.reporter=$event"
+          class="form-control" #reporter="ngModel" required>
+          <option [ngValue]="null" disabled="true" [selected]="true" style="display: none">Select</option>
+          <option *ngFor="let i of reporterOptions" [ngValue]="i.key">{{i.reporter}}</option>
+        </select>
+        <div class="alert alert-danger" *ngIf="!reporter.valid && (reporter.dirty || reporter.touched)"> Reporter is
+          required
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Status</label>
+        <select name="status" [ngModel]="newBug.status" (ngModelChange)="insertform.statuss=$event" class="form-control"
+          #statuss="ngModel" required>
+          <option [ngValue]="null" disabled="true" [selected]="true" style="display: none">Select</option>
+          <option *ngFor="let i of statusOptions" [ngValue]="i.key">{{i.status}}</option>
+        </select>
+        <div class="alert alert-danger" *ngIf="!statuss.valid && (statuss.dirty || statuss.touched)"> Status is required
+        </div>
+      </div>
+    </div>
+    <button title="Submit" type="submit" [disabled]="!insertform.valid" class="btn btn-lg btnSubmit pl-0">
+      <span class="fa-stack">
+        <i class="fa fa-circle fa-stack-2x circleSubmit"></i>
+        <i class="fa fa-check fa-stack-1x"></i>
+      </span>
+    </button>
+  </form>
+</div>

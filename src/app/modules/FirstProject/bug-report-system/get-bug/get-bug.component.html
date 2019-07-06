@@ -1,0 +1,174 @@
+<div class="container text-center">
+  <div class="form-row">
+    <div class="col text-left">
+      <!--Insert button-->
+      <button title="Report new bug" (click)="insertBug()" class="btn btn-lg btnAddBug">
+        <span class="fa-stack"> 
+          <i class="fa fa-circle fa-stack-2x circlePlus"></i>
+          <i class="fa fa-plus fa-stack-1x"></i>
+        </span>
+      </button>
+      <!--Close of insert button-->
+    </div>
+  </div>
+  <!--Table of bugs-->
+  <table class="table table-bordered table-hover">
+    <!--Table Header -->
+    <thead>
+      <tr>
+        <th (click)="sort('title')">Title
+          <i *ngIf="(sortingDirection === 'asc' || sortingDirection === 'desc') && sortByVar !== 'title'"
+            [ngClass]="'fa fa-sort iconColor'"></i>
+          <i *ngIf="sortingDirection === 'asc' && sortByVar === 'title'" [ngClass]="'fa fa-sort-up'"></i>
+          <i *ngIf="sortingDirection === 'desc' && sortByVar === 'title'" [ngClass]="'fa fa-sort-down'"></i>
+        </th>
+        <th (click)="sort('priority')">Priority
+          <i *ngIf="(sortingDirection === 'asc' || sortingDirection === 'desc') && sortByVar !== 'priority'"
+            [ngClass]="'fa fa-sort iconColor'"></i>
+          <i *ngIf="sortingDirection === 'asc' && sortByVar === 'priority'" [ngClass]="'fa fa-sort-up'"></i>
+          <i *ngIf="sortingDirection === 'desc' && sortByVar === 'priority'" [ngClass]="'fa fa-sort-down'"></i>
+        </th>
+        <th (click)="sort('reporter')">Reporter
+          <i *ngIf="(sortingDirection === 'asc' || sortingDirection === 'desc') && sortByVar !== 'reporter'"
+            [ngClass]="'fa fa-sort iconColor'"></i>
+          <i *ngIf="sortingDirection === 'asc' && sortByVar === 'reporter'" [ngClass]="'fa fa-sort-up'"></i>
+          <i *ngIf="sortingDirection === 'desc' && sortByVar === 'reporter'" [ngClass]="'fa fa-sort-down'"></i>
+        </th>
+        <th (click)="sort('status')">Status
+          <i *ngIf="(sortingDirection === 'asc' || sortingDirection === 'desc') && sortByVar !== 'status'"
+            [ngClass]="'fa fa-sort iconColor'"></i>
+          <i *ngIf="sortingDirection === 'asc' && sortByVar === 'status'" [ngClass]="'fa fa-sort-up'"></i>
+          <i *ngIf="sortingDirection === 'desc' && sortByVar === 'status'" [ngClass]="'fa fa-sort-down'"></i>
+        </th>
+        <th (click)="sort('createdAt')">Date Created
+          <i *ngIf="(sortingDirection === 'asc' || sortingDirection === 'desc') && sortByVar !== 'createdAt'"
+            [ngClass]="'fa fa-sort iconColor'"></i>
+          <i *ngIf="sortingDirection === 'asc' && sortByVar === 'createdAt'" [ngClass]="'fa fa-sort-up'"></i>
+          <i *ngIf="sortingDirection === 'desc' && sortByVar === 'createdAt'" [ngClass]="'fa fa-sort-down'"></i>
+        </th>
+        <th>
+          <!--Filter button-->
+          <button title="Filters" type="button" class="btn btn-sm btnFilters filters" (click)="showFilterForm()">
+            <span>
+              <i title="Filters" class="fa fa-filter fa-1x filter"></i>
+            </span>
+          </button>
+          <!--Close Filter button-->
+        </th>
+      </tr>
+    </thead>
+    <!--Close Table Header -->
+    <tbody>
+      <!--Filter-->
+      <tr *ngIf="filterIconClicked">
+        <td colspan='6'>
+          <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" class='px-3'>
+            <div class="form-row d-flex justify-content-around align-items-end">
+              <div class="form-group">
+                  <input id="title" name="title" [(ngModel)]="searchedBug.title" type="text"
+                  class="form-control formStyle" required placeholder="Title" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <select id="priority" name="priority" [ngModel]="selectedPriority"
+                  (ngModelChange)="onChangePriority($event)" class="form-control formStyle" required>
+                  <option ngValue="" hidden>Priority</option>
+                  <option *ngFor="let i of priorityOptions" [ngValue]="i.key">{{i.name}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select id="reporter" name="reporter" [ngModel]="selectedReporter"
+                  (ngModelChange)="onChangeReporter($event)" class="form-control formStyle" required>
+                  <option ngValue="" hidden>Reporter</option>
+                  <option *ngFor="let i of reporterOptions" [ngValue]="i.key">{{i.name}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select id="status" name="status" [ngModel]="selectedStatus" (ngModelChange)="onChangeStatus($event)"
+                  class="form-control formStyle" required>
+                  <option ngValue="" hidden>Status</option>
+                  <option *ngFor="let i of statusOptions" [ngValue]="i.key">{{i.name}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <!--Search button -->
+                <button type="submit" class="btn btnSearch form-group" title="Search">
+                  <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x circleSearch"></i>
+                    <i class="fa fa-search fa-stack-1x"></i>
+                  </span>
+                </button>
+                <!--Close Search button-->
+                <!--RemoveFilters button-->
+                <button type="button" class="btn btnRemoveFilters form-group" title="Remove filters"
+                  (click)="removeFilters()">
+                  <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x circleFilter"></i>
+                    <i class="fa fa-filter fa-stack-1x"></i>
+                  </span>
+                </button>
+                <!--Close RemoveFilter button-->
+              </div>
+            </div>
+          </form>
+        </td>
+      </tr>
+      <!--Close of Filter-->
+      <tr *ngFor="let bug of bugs">
+        <td>{{bug.title}}</td>
+        <td>{{bug.priority | stringifyPriority}}</td>
+        <td>{{bug.reporter | uppercase}}</td>
+        <td>{{bug.status | capitalize }}</td>
+        <td>{{bug.createdAt | date: 'd/M/yy - H:mm'}}</td>
+        <td>
+          <!--Edit button-->
+          <button title="Edit" class="btn btn-sm btnEditBug" value="editBugMethod" (click)="editBugMethod(bug.id)">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-2x circlePencil"></i>
+              <i class="fa fa-pencil fa-stack-1x"></i>
+            </span>
+          </button>
+          <!--Close of Edit button-->
+          <!--Delete button-->
+          <button title="Delete" class="btn btn-sm btnDeleteBug" value="deleteBugMethod"
+            (click)="deleteBugMethod(bug.id)">
+            <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-2x circleTrash"></i>
+              <i class="fa fa-trash-o fa-stack-1x"></i>
+            </span>
+          </button>
+          <!--Close of Delete button-->
+        </td>
+      </tr>
+      <tr *ngIf="bugs.length === 0">
+        <td colspan='7' class="font-weight-bold">No matching records found</td>
+      </tr>
+    </tbody>
+    <!--Close Table-->
+  </table>
+  <!--Pagination Section -->
+  <div class="d-flex justify-content-end">
+    <div class="align-self-center">
+      <button title="Previous" class="btn btn-lg btnPage" [disabled]="page === 0" (click)="previousPage()">
+        <span class="fa-stack">
+          <i class="fa fa-circle fa-stack-2x circleAngle"></i>
+          <i class="fa fa-angle-left fa-stack-1x"></i>
+        </span>
+      </button>
+    </div>
+    <div class="align-self-center" id="currentPageNumber">
+      <p>
+        {{page + 1}}
+      </p>
+    </div>
+    <div class="align-self-center">
+      <button title="Next" id="nextPageButton" class="btn btn-lg btnPage"
+        [disabled]="bugsNext.length === 0 && bugs.length !== 10" (click)="nextPage()">
+        <span class="fa-stack">
+          <i class="fa fa-circle fa-stack-2x circleAngle"></i>
+          <i class="fa fa-angle-right fa-stack-1x"></i>
+        </span>
+      </button>
+    </div>
+  </div>
+  <!--Close Pagination Section -->
+</div>

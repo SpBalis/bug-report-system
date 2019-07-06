@@ -1,0 +1,51 @@
+h1 {
+  font-size: 3em;
+  font-weight: 300;
+  line-height: 1em;
+  text-align: center;
+  color: #4DC3FA;
+  padding: 20px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.jumbotron {
+  background-color: #1F2739;
+  /* margin: 0; */
+}
+
+.blue {
+  color: #185875;
+}
+
+.orange {
+  color: #ffb742;
+  /* color: #FFF842; */
+}
+
+.fa-bug {
+  color: #fb667a;
+  padding-top: 5px;
+}
+
+.drop-shadow {
+  filter: drop-shadow(8px 8px 2px rgba(0, 0, 0, 0.5));
+}
+
+.drop-shadow:hover {
+  filter: drop-shadow(12px 12px 5px rgba(0, 0, 0, 0.5));
+}
+
+.vibrate:hover {
+  animation: vbr 0.1s ease-in-out 0.1s infinite alternate;
+}
+
+@keyframes vbr {
+  from {
+    transform: rotate(10deg);
+  }
+  to {
+    transform-origin: center center;
+    transform: rotate(-10deg);
+  }
+}
